@@ -97,11 +97,12 @@ def parse_file( fname, edges, transform, screen, color ):
             draw_lines(edges, screen, color)
 
             if line == 'display':
-                display(screen)
+                x=0
+                #display(screen)
             else:
                 save_extension(screen, args[0])
 
         elif line == 'circle':
-            add_circle(edges,float(args[0]),float(args[1]),float(args[2]),float(args[3]),10)
+            add_circle(edges,float(args[0]),float(args[1]),float(args[2]),float(args[3]),150)
 
         c+= 1
