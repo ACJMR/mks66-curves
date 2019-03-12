@@ -3,6 +3,18 @@ from matrix import *
 
 
 def add_circle( points, cx, cy, cz, r, step ):
+    t = 0
+    prev_x = r * math.cos(t) + cx
+    prev_y = r * math.sin(t) + cy
+    s = (math.pi*2)/step
+    t+= s
+    while (t < (math.pi * 2)):
+        x = r * math.cos(t) + cx
+        y = r * math.sin(t) + cy
+        add_edge(points,prev_x,prev_y,cz,x,y,cz)
+        prev_x = x
+        prev_y = y
+        t += s
     pass
 
 def add_curve( points, x0, y0, x1, y1, x2, y2, x3, y3, step, curve_type ):
