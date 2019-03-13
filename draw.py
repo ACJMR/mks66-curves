@@ -8,7 +8,7 @@ def add_circle( points, cx, cy, cz, r, step ):
     prev_y = r * math.sin(t) + cy
     s = (math.pi*2)/step
     t+= s
-    while (t < (math.pi * 2)):
+    while (t <= (math.pi * 2)):
         x = r * math.cos(t) + cx
         y = r * math.sin(t) + cy
         add_edge(points,prev_x,prev_y,cz,x,y,cz)
@@ -18,8 +18,45 @@ def add_circle( points, cx, cy, cz, r, step ):
     pass
 
 def add_curve( points, x0, y0, x1, y1, x2, y2, x3, y3, step, curve_type ):
+
+    if curve_type == 'hermite':
+        make_hermite(points,x0,y0,x1,y1,x2,y2,x3,x3,step)
     pass
 
+
+def make_hermite(points,x0,y0,x1,y1,rx0,ry0,rx1,ry1,step):
+    xcoef = generate_hermite_coefs(x0,x1,rx0,rx1)
+    ycoef = generate_hermite_coefs(y0,y1,ry0,ry1)
+    #copy verticle xcoef matrix into horizontal one
+
+    t = 0
+    m = new_matrix(4,1)
+
+    #one pass
+    step_size = 1.0/(step)
+    m[0][0] = t**3
+    m[0][1] = t**2
+    m[0][2] = t
+    m[0][3] = 1
+
+    prevx = dotprod(xcoef,m)
+    prevy = dotprod(ycoef,m)
+
+    t+= step_size
+
+    while (t <= 1):
+        m[0][0] = t**3
+        m[0][1] = t**2
+        m[0][2] = t
+        m[0][3] = 1
+        x = dotprod(xcoef,m)
+        y = dotprod(ycoef,m)
+
+        add_edge(points,prevx,prevy,0,x,y,0)
+        prevx = x
+        prevy = y
+        t+= step_size
+    pass
 
 def draw_lines( matrix, screen, color ):
     if len(matrix) < 2:
