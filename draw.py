@@ -25,38 +25,22 @@ def add_curve( points, x0, y0, x1, y1, x2, y2, x3, y3, step, curve_type ):
 
 
 def make_hermite(points,x0,y0,x1,y1,rx0,ry0,rx1,ry1,step):
-    xcoef = generate_hermite_coefs(x0,x1,rx0,rx1)
-    ycoef = generate_hermite_coefs(y0,y1,ry0,ry1)
-    #copy verticle xcoef matrix into horizontal one
-
-    t = 0
-    m = new_matrix(4,1)
-
-    #one pass
     step_size = 1.0/(step)
-    m[0][0] = t**3
-    m[0][1] = t**2
-    m[0][2] = t
-    m[0][3] = 1
-
-    prevx = dotprod(xcoef,m)
-    prevy = dotprod(ycoef,m)
-
-    t+= step_size
-
+    t = 0
+    prevx = herm_help(x0,x1,rx0,rx1)
+    prevy = herm_help(y0,y1,ry0,ry1)
+    t+=step_size
     while (t <= 1):
-        m[0][0] = t**3
-        m[0][1] = t**2
-        m[0][2] = t
-        m[0][3] = 1
-        x = dotprod(xcoef,m)
-        y = dotprod(ycoef,m)
-
+        x = herm_help(x0,x1,rx0,rx1)
+        y = herm_help(y0,y1,ry0,ry1)
         add_edge(points,prevx,prevy,0,x,y,0)
         prevx = x
         prevy = y
-        t+= step_size
+        t+=step_size
     pass
+
+def herm_help(p0,p1,r0,r1,i):
+    (2*i**3 - 3*i**2 + 1)*p0 + (-2*i**3 + 3*i**2)*p1 + (i**3 - 2*i**2 + i)*r0 + (i**3 -  i**2 )*r1
 
 def draw_lines( matrix, screen, color ):
     if len(matrix) < 2:

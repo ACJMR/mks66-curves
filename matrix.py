@@ -9,37 +9,6 @@ z0  z1  ... zn
 """
 import math
 
-def make_bezier():
-    pass
-
-def dotprod(m1,m2):
-    return m1[0][0] * m2[0][0] + m1[0][1] * m2[0][1] + m1[0][2] * m2[0][2] + m1[0][3] * m2[0][3]
-
-def generate_curve_coefs( p0, p1, p2, p3, t ):
-    pass
-
-def generate_hermite_coefs(p0,p1,r0,r1):
-    m = new_matrix()
-    m[0][1] = 2
-    m[0][2] = -3
-    m[0][3] = 1
-    m[1][0] = -2
-    m[1][1] = 3
-    m[2][0] = 1
-    m[2][1] = -2
-    m[2][2] = 1
-    m[3][0] = 1
-    m[3][1] = -1
-    m2 = new_matrix(4,1)
-    m2[0][0] = p0
-    m2[0][1] = r0
-    m2[0][2] = p1
-    m2[0][3] = r1
-
-    matrix_mult(m,m2)
-    return m2
-
-
 def make_translate( x, y, z ):
     t = new_matrix()
     ident(t)
