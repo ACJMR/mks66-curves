@@ -18,21 +18,41 @@ def add_circle( points, cx, cy, cz, r, step ):
     pass
 
 def add_curve( points, x0, y0, x1, y1, x2, y2, x3, y3, step, curve_type ):
-
     if curve_type == 'hermite':
         make_hermite(points,x0,y0,x1,y1,x2,y2,x3,x3,step)
+    if curve_type == 'bezier':
+        make_bezier(points,x0,y0,x1,y1,x2,y2,x3,y3,step)
     pass
+
+
+def make_bezier(points,x0, y0, x1, y1, x2, y2, x3, y3, step):
+    step_size = 1.0/(step)
+    t = 0
+    prevx = int(bez_help(x0,x1,x2,x3,t))
+    prevy = int(bez_help(y0,y1,y2,y3,t))
+    t+=step_size
+    while (t <= 1):
+        x = int(bez_help(x0,x1,x2,x3,t))
+        y = int(bez_help(y0,y1,y2,y3,t))
+        add_edge(points,prevx,prevy,0,x,y,0)
+        prevx = x
+        prevy = y
+        t+=step_size
+    pass
+
+def bez_help(p0,p1,p2,p3,i):
+    return p0*(1-i)**3 + 3*i*p1*(1-i)**2 + 3*p2*(i**2)*(1-i) + p3*i**3
 
 
 def make_hermite(points,x0,y0,x1,y1,rx0,ry0,rx1,ry1,step):
     step_size = 1.0/(step)
     t = 0
-    prevx = herm_help(x0,x1,rx0,rx1)
-    prevy = herm_help(y0,y1,ry0,ry1)
+    prevx = int(herm_help(x0,x1,rx0,rx1,t))
+    prevy = int(herm_help(y0,y1,ry0,ry1,t))
     t+=step_size
     while (t <= 1):
-        x = herm_help(x0,x1,rx0,rx1)
-        y = herm_help(y0,y1,ry0,ry1)
+        x = int(herm_help(x0,x1,rx0,rx1,t))
+        y = int(herm_help(y0,y1,ry0,ry1,t))
         add_edge(points,prevx,prevy,0,x,y,0)
         prevx = x
         prevy = y
@@ -40,7 +60,7 @@ def make_hermite(points,x0,y0,x1,y1,rx0,ry0,rx1,ry1,step):
     pass
 
 def herm_help(p0,p1,r0,r1,i):
-    (2*i**3 - 3*i**2 + 1)*p0 + (-2*i**3 + 3*i**2)*p1 + (i**3 - 2*i**2 + i)*r0 + (i**3 -  i**2 )*r1
+    return (2*i**3 - 3*i**2 + 1)*p0 + (-2*i**3 + 3*i**2)*p1 + (i**3 - 2*i**2 + i)*r0 + (i**3 -  i**2 )*r1
 
 def draw_lines( matrix, screen, color ):
     if len(matrix) < 2:
