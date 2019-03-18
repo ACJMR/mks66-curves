@@ -98,7 +98,7 @@ def parse_file( fname, edges, transform, screen, color ):
 
             if line == 'display':
                 x=0
-                #display(screen)
+                display(screen)
             else:
                 save_extension(screen, args[0])
 
